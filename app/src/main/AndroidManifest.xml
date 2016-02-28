@@ -16,6 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".UpdateFoodItems"
+            android:label="@string/title_activity_update_food_items" >
+        </activity>
     </application>
 
 </manifest>

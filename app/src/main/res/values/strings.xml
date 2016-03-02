@@ -10,4 +10,5 @@
     <string name="name_of_item">Name of item:</string>
     <string name="weight">Weight:</string>
     <string name="kcal">kcal:</string>
+    <string name="food_list">Food list</string>
 </resources>

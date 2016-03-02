@@ -1,5 +1,6 @@
 package com.peter.vladimir.iknowwhatiameating;
 
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -31,6 +32,12 @@ public class UpdateFoodItems extends AppCompatActivity implements View.OnClickLi
         btn_clear = (Button) findViewById(R.id.btn_clear);
         btn_clear.setOnClickListener(this);
         lst_foodList = (ListView) findViewById(R.id.lst_foodList);
+        refreshList();
+    }
+
+    private void refreshList() {
+        Cursor cursor = SQLfunctions.getFoodItems();
+
     }
 
     @Override
@@ -59,6 +66,8 @@ public class UpdateFoodItems extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         if (v == btn_clear) {
             et_name.setText("");
+            et_weight.setText("");
+            et_calories.setText("");
         } else if (v == btn_add) {
             name = et_name.getText().toString();
             weight = Double.parseDouble(et_weight.getText().toString());

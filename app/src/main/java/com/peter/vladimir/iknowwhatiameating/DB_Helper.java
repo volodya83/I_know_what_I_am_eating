@@ -1,8 +1,12 @@
 package com.peter.vladimir.iknowwhatiameating;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
+
+import java.sql.Date;
 
 /**
  * Created by Volodya on 26-Feb-16.
@@ -15,6 +19,7 @@ public class DB_Helper extends SQLiteOpenHelper
 
     public DB_Helper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        _context = context;
     }
 
     @Override
@@ -23,24 +28,29 @@ public class DB_Helper extends SQLiteOpenHelper
         final String CREATE_TABLE_FOOD_ITEMS = "CREATE TABLE FoodItems (" +
                                                 "_id integer NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                                                 "name text UNIQUE, " +
-                                                "calories double, " +
-                                                "weight integer " +
+                                                "weight integer, " +
+                                                "calories double " +
                                                 "); ";
         final String CREATE_TABLE_DAILY_MENU = "CREATE TABLE DailyMenu ( " +
                                             "_id integer NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                                            "date date, " +
-                                            "meal integer, " +
-                                            "item integer, " +
-                                            "num_of integer " +
+                                            "date text " +
+//                                            "meal integer, " +
+//                                            "item integer, " +
+//                                            "num_of integer " +
                                             ")";
 
         sqLiteDatabase.execSQL(CREATE_TABLE_FOOD_ITEMS);
         sqLiteDatabase.execSQL(CREATE_TABLE_DAILY_MENU);
+        ContentValues values = new ContentValues();
+        Date toDay = new Date(System.currentTimeMillis());
+        values.put("date", toDay.toString());
+//        Toast.makeText(_context, toDay.toString(), Toast.LENGTH_SHORT).show();
+        sqLiteDatabase.insert("DailyMenu", "", values);
     }
 
     @Override
     public void onOpen(SQLiteDatabase db) {
-        //onUpgrade(db, 1, 1);
+        onUpgrade(db, 1, 1);    // TODO: onUpgrade
         super.onOpen(db);
     }
 

@@ -45,7 +45,7 @@
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="number|numberSigned"
             android:ems="10"
             android:id="@+id/et_weight"
             android:layout_weight="1" />

@@ -1,5 +1,6 @@
 package com.peter.vladimir.iknowwhatiameating;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,15 +16,18 @@ public class UpdateFoodItems extends AppCompatActivity implements View.OnClickLi
 
     private EditText et_name, et_weight, et_calories;
     private Button btn_add, btn_clear;
-    private ListView lst_foodList;
+    private static ListView lst_foodList;
     private String name;
     private double weight, calories;
+    private static Context context;
+    private static MyCursorAdapter cursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_food_items);
 
+        context = this;
         et_name = (EditText) findViewById(R.id.et_item_name);
         et_weight = (EditText) findViewById(R.id.et_weight);
         et_calories = (EditText) findViewById(R.id.et_calories);
@@ -35,9 +39,10 @@ public class UpdateFoodItems extends AppCompatActivity implements View.OnClickLi
         refreshList();
     }
 
-    private void refreshList() {
+    public static void refreshList() {
         Cursor cursor = SQLfunctions.getFoodItems();
-
+        cursorAdapter = new MyCursorAdapter(context, cursor, MyCursorAdapter.ID_FOOD_ITEM_LIST);
+        lst_foodList.setAdapter(cursorAdapter);
     }
 
     @Override
@@ -70,16 +75,23 @@ public class UpdateFoodItems extends AppCompatActivity implements View.OnClickLi
             et_calories.setText("");
         } else if (v == btn_add) {
             name = et_name.getText().toString();
-            weight = Double.parseDouble(et_weight.getText().toString());
-            calories = Double.parseDouble(et_calories.getText().toString());
+            try {
+                weight = Double.valueOf(et_weight.getText().toString());
+                calories = Double.valueOf(et_calories.getText().toString());
+            }catch (NumberFormatException e){
+                Toast.makeText(this, "Weight or calories error", Toast.LENGTH_SHORT).show();
+                weight=0;
+                calories=0;
+            }
             if (name.length() < 5) {
                 Toast.makeText(this, "Name must contain more than 5 letters", Toast.LENGTH_SHORT).show();
-            } else if (weight < 0) {
-                Toast.makeText(this, "Weight must be a number", Toast.LENGTH_SHORT).show();
-            } else if (calories < 1) {
-                Toast.makeText(this, "Write calories", Toast.LENGTH_SHORT).show();
+            } else if (et_weight.getText().length()<1) {
+                Toast.makeText(this, "Enter weight", Toast.LENGTH_SHORT).show();
+            } else if (et_calories.getText().length()<1 ) {
+                Toast.makeText(this, "Enter calories", Toast.LENGTH_SHORT).show();
             } else {
                 SQLfunctions.addFoodItem(name, weight, calories);
+                refreshList();
             }
         }
     }

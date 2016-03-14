@@ -12,9 +12,16 @@ public class DailyMenu {
     private Meal _breakfast, _lunch, _dinner, _snack;
     private ArrayList<FoodItem> _other;
     private double _calories;
+    private String str;
+
+    public String toString(){
+        str.concat(_breakfast.toString() + _lunch.toString() + _dinner.toString() + _snack.toString() );
+        return str;
+    }
 
     public DailyMenu(Date date){
         _date = date;
+        str = _date.toString() + "/n";
     }
 
     public Meal get_breakfast() {

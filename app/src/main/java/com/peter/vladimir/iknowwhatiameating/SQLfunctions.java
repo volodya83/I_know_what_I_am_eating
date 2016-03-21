@@ -71,4 +71,8 @@ public abstract class SQLfunctions {
                                         "FROM DayItems " +
                                         "WHERE day_id = ?", arg);
     }
+
+    public static void saveMenuItem(int day_id, int item_id, Double weight, int meal) {
+        // TODO: 21-Mar-16 delete and insert
+    }
 }

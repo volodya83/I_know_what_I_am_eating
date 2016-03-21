@@ -21,36 +21,38 @@ import java.util.HashMap;
 
 public class ChangeDayMenu extends AppCompatActivity implements View.OnClickListener {
 
-    private static final int COL_NAME = 1, COL_WEIGHT = 2, COL_CALORIES = 3;
+    private static final int COL_ID = 0, COL_NAME = 1, COL_WEIGHT = 2, COL_CALORIES = 3;
     private static final int COL_MEAL = 2, COL_ITEM = 3;
     private static final int BREAKFAST = 0, LUNCH = 1, DINNER = 2, SNACK = 3;
 
     private DatePicker datePicker;
     private LinearLayout ll_breakfast, ll_lunch, ll_dinner, ll_snack;
     private Button btn_add_line_breakfast, btn_add_line_lunch,
-            btn_add_line_dinner, btn_add_line_snack;
-    private TextView tv_total_cal_day, tv_cal_breakfast, tv_cal_lunch, tv_cal_dinner, tv_cal_snack;
-    private ArrayList<MyLinearLayout> breakfast_list,
+            btn_add_line_dinner, btn_add_line_snack, btn_save, btn_clear;
+    private static TextView tv_total_cal_day, tv_cal_breakfast, tv_cal_lunch, tv_cal_dinner, tv_cal_snack;
+    private static ArrayList<MyLinearLayout> breakfast_list,
             lunch_list, dinner_list, snack_list;
     private ArrayAdapter<String> adapter;
     private Cursor cursor;
     private String[] arr_food_items;
     private double[] calArr;
+    private int[] arr_ids;
 
     ArrayList<ArrayList<MyLinearLayout>> arr_lists;
-    TextView[] tv_array;
-    double cal[] = new double[4];
-    double total_cal;
-    int size;
+//    TextView[] tv_array;
+    private double cal[] = new double[4];
+    private double total_cal;
+    private int size;
+    private int _day_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_day_menu);
         String date_str = getIntent().getExtras().getString("date");
-        String _id = getIntent().getExtras().getString("_id");
+        String day_id = String.valueOf((_day_id = getIntent().getExtras().getInt("_id")));
         String[] arg = new String[1];
-        arg[0] = _id;
+        arg[0] = day_id;
         Date date = Date.valueOf(date_str);
         datePicker = (DatePicker) findViewById(R.id.datePicker);
         datePicker.init(date.getYear() + 1900, date.getMonth(), date.getDate(), null);
@@ -74,43 +76,66 @@ public class ChangeDayMenu extends AppCompatActivity implements View.OnClickList
         btn_add_line_dinner.setOnClickListener(this);
         btn_add_line_snack = (Button) findViewById(R.id.btn_add_line_snack);
         btn_add_line_snack.setOnClickListener(this);
+        btn_save = (Button)findViewById(R.id.btn_save_menu);
+        btn_save.setOnClickListener(this);
+        btn_clear = (Button)findViewById(R.id.btn_clear_menu);
+        btn_clear.setOnClickListener(this);
 
         createAdapter();
         createLists();
-//        fillFilds(SQLfunctions.dayItems(arg));
+        fillFilds(SQLfunctions.dayItems(arg));
 
 
     }
 
-    private void fillFilds(Cursor cursor) {
-        cursor.moveToFirst();
-        int meal;
-        MyLinearLayout myLayout;
-        while (cursor.isAfterLast()) {
-            meal = cursor.getInt(COL_MEAL);
-            switch (meal) {
-                case BREAKFAST:
-                    myLayout = addLine(breakfast_list, ll_breakfast);
-                    myLayout._auto_tv.setText(cursor.getString(COL_ITEM).toString());
-                    tv_cal_breakfast.setText((cursor.getDouble(COL_CALORIES) + Double.valueOf(tv_cal_breakfast.getText().toString())) + "");
-                    break;
-                case LUNCH:
-                    myLayout = addLine(lunch_list, ll_lunch);
-                    myLayout._auto_tv.setText(cursor.getString(COL_ITEM).toString());
-                    tv_cal_lunch.setText((cursor.getDouble(COL_CALORIES) + Double.valueOf(tv_cal_lunch.getText().toString())) + "");
-                    break;
-                case DINNER:
-                    myLayout = addLine(dinner_list, ll_dinner);
-                    myLayout._auto_tv.setText(cursor.getString(COL_ITEM).toString());
-                    tv_cal_dinner.setText((cursor.getDouble(COL_CALORIES) + Double.valueOf(tv_cal_dinner.getText().toString())) + "");
-                    break;
-                case SNACK:
-                    myLayout = addLine(snack_list, ll_snack);
-                    myLayout._auto_tv.setText(cursor.getString(COL_ITEM).toString());
-                    tv_cal_snack.setText((cursor.getDouble(COL_CALORIES) + Double.valueOf(tv_cal_breakfast.getText().toString())) + "");
-                    break;
-            }
+    public static void fillCalories(){
+        double cal = 0;
+        tv_cal_breakfast.setText((cal += getSumOfCal(breakfast_list))+"");
+        tv_cal_lunch.setText((cal += getSumOfCal(lunch_list))+"");
+        tv_cal_dinner.setText((cal += getSumOfCal(dinner_list))+"");
+        tv_cal_snack.setText((cal += getSumOfCal(snack_list))+"");
+        tv_total_cal_day.setText(cal + "");
+    }
+
+    private static double getSumOfCal(ArrayList<MyLinearLayout> list) {
+        double sum = 0;
+        for (int i=0; i<list.size(); i++){
+            sum +=list.get(i)._calories;
         }
+        return sum;
+    }
+
+    private void fillFilds(Cursor cursor) {
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            int meal;
+            MyLinearLayout myLayout;
+            while (cursor.isAfterLast()) {
+                meal = cursor.getInt(COL_MEAL);
+                switch (meal) {
+                    case BREAKFAST:
+                        myLayout = addLine(breakfast_list, ll_breakfast, 0);
+                        myLayout._auto_tv.setText(cursor.getString(COL_ITEM).toString());
+                        tv_cal_breakfast.setText((cursor.getDouble(COL_CALORIES) + Double.valueOf(tv_cal_breakfast.getText().toString())) + "");
+                        break;
+                    case LUNCH:
+                        myLayout = addLine(lunch_list, ll_lunch, 1);
+                        myLayout._auto_tv.setText(cursor.getString(COL_ITEM).toString());
+                        tv_cal_lunch.setText((cursor.getDouble(COL_CALORIES) + Double.valueOf(tv_cal_lunch.getText().toString())) + "");
+                        break;
+                    case DINNER:
+                        myLayout = addLine(dinner_list, ll_dinner, 2);
+                        myLayout._auto_tv.setText(cursor.getString(COL_ITEM).toString());
+                        tv_cal_dinner.setText((cursor.getDouble(COL_CALORIES) + Double.valueOf(tv_cal_dinner.getText().toString())) + "");
+                        break;
+                    case SNACK:
+                        myLayout = addLine(snack_list, ll_snack, 3);
+                        myLayout._auto_tv.setText(cursor.getString(COL_ITEM).toString());
+                        tv_cal_snack.setText((cursor.getDouble(COL_CALORIES) + Double.valueOf(tv_cal_breakfast.getText().toString())) + "");
+                        break;
+                }
+            }
+        }else Toast.makeText(this, "cursor is null", Toast.LENGTH_SHORT).show();
     }
 
     private void createLists() {
@@ -124,11 +149,11 @@ public class ChangeDayMenu extends AppCompatActivity implements View.OnClickList
         arr_lists.add(1, lunch_list);
         arr_lists.add(2, dinner_list);
         arr_lists.add(3, snack_list);
-        tv_array = new TextView[4];
-        tv_array[0] = tv_cal_breakfast;
-        tv_array[1] = tv_cal_lunch;
-        tv_array[2] = tv_cal_dinner;
-        tv_array[3] = tv_cal_snack;
+//        tv_array = new TextView[4];
+//        tv_array[0] = tv_cal_breakfast;
+//        tv_array[1] = tv_cal_lunch;
+//        tv_array[2] = tv_cal_dinner;
+//        tv_array[3] = tv_cal_snack;
     }
 
     private void createAdapter() {
@@ -138,12 +163,14 @@ public class ChangeDayMenu extends AppCompatActivity implements View.OnClickList
         FoodItem item;
         arr_food_items = new String[cnt];
         calArr = new double[cnt];
+        arr_ids = new int[cnt];
 
 
         for (int i = 0; !cursor.isAfterLast(); i++) {
             item = new FoodItem(cursor.getString(COL_NAME), cursor.getInt(COL_WEIGHT), cursor.getDouble(COL_CALORIES));
             arr_food_items[i] = item.toString();
             calArr[i] = item.get_calories();
+            arr_ids[i] = cursor.getInt(COL_ID);
             cursor.moveToNext();
         }
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arr_food_items);
@@ -152,20 +179,43 @@ public class ChangeDayMenu extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (v == btn_add_line_breakfast) {
-            addLine(breakfast_list, ll_breakfast);
+            addLine(breakfast_list, ll_breakfast, 0);
         } else if (v == btn_add_line_lunch) {
-            addLine(lunch_list, ll_lunch);
+            addLine(lunch_list, ll_lunch, 1);
         } else if (v == btn_add_line_dinner) {
-            addLine(dinner_list, ll_dinner);
-        } else {
-            addLine(snack_list, ll_snack);
+            addLine(dinner_list, ll_dinner, 2);
+        } else if (v == btn_add_line_snack){
+            addLine(snack_list, ll_snack, 3);
+        } else if (v == btn_save){
+            saveMenu();
+        } else if (v == btn_clear){
+            clearMenu();
+        }
+    }
+
+    private void clearMenu() {
+        // TODO: 21-Mar-16
+    }
+
+    private void saveMenu() {
+        ArrayList<MyLinearLayout> list;
+        int size;
+        MyLinearLayout layout;
+        for (int i = 0; i<4; i++){
+            list = arr_lists.get(i);
+            size = list.size();
+            for (int j = 0; j < size; j++){
+                layout = list.get(j);
+                SQLfunctions.saveMenuItem(_day_id, arr_ids[layout._arr_position],
+                        Double.valueOf(layout._et_weight.getText().toString()), layout._meal);
+            }
         }
     }
 
 
-    private MyLinearLayout addLine(ArrayList<MyLinearLayout> list, LinearLayout layout) {
+    private MyLinearLayout addLine(ArrayList<MyLinearLayout> list, LinearLayout layout, int meal) {
 
-        MyLinearLayout myLayout = new MyLinearLayout(this, adapter, calArr);
+        MyLinearLayout myLayout = new MyLinearLayout(this, adapter, calArr, meal);
 
         list.add(myLayout);
         layout.addView(myLayout);

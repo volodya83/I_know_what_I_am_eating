@@ -39,8 +39,8 @@ public class DB_Helper extends SQLiteOpenHelper
                                             "_id integer NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                                             "day_id integer, " +
                                             "meal integer, " +
-                                            "item text, " +
-                                            "calories double " +
+                                            "item_id integer, " +
+                                            "weight double " +
                                             "); ";
 
         sqLiteDatabase.execSQL(CREATE_TABLE_FOOD_ITEMS);
@@ -55,7 +55,7 @@ public class DB_Helper extends SQLiteOpenHelper
 
     @Override
     public void onOpen(SQLiteDatabase db) {
-//        onUpgrade(db, 1, 1);    // TODO: onUpgrade
+        onUpgrade(db, 1, 1);    // TODO: onUpgrade
         super.onOpen(db);
     }
 

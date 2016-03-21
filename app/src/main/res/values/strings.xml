@@ -9,7 +9,6 @@
     <string name="title_activity_update_food_items">UpdateFoodItems</string>
     <string name="name_of_item">Name of item:</string>
     <string name="weight">Weight:</string>
-    <string name="kcal">kcal:</string>
     <string name="food_list">Food list</string>
     <string name="change">Change</string>
     <string name="title_activity_change_day_menu">ChangeDayMenu</string>
@@ -18,4 +17,13 @@
     <string name="breakfast">Breakfast</string>
     <string name="snack">Snack</string>
     <string name="add_line">Add line</string>
+    <string name="save">Save</string>
+    <string name="clear">Clear</string>
+    <string name="total_calories_day">Total calories per day</string>
+    <string name="kcal">kcal</string>
+    <string name="kcal_">kcal:</string>
+    <string name="calorie_breakfast">Calorie breakfast</string>
+    <string name="calorie_lunch">Calorie lunch</string>
+    <string name="calorie_dinner">Calorie dinner</string>
+    <string name="calorie_snack">Calorie snack</string>>
 </resources>

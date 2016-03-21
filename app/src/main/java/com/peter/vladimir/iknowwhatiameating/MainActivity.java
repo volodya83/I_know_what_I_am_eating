@@ -19,12 +19,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        SQLfunctions.setContext(getApplicationContext());
-//        SQLfunctions.addDays();
-//        cursor = SQLfunctions.getDayMenu();
-//        lst_day_menu = (ListView)findViewById(R.id.lst_days);
-//        cursorAdapter = new MyCursorAdapter(this, cursor, MyCursorAdapter.ID_DAY_ITEM);
-//        lst_day_menu.setAdapter(cursorAdapter);
+        SQLfunctions.setContext(getApplicationContext());
+        SQLfunctions.addDays();
+        cursor = SQLfunctions.getDayMenu();
+        lst_day_menu = (ListView)findViewById(R.id.lst_days);
+        cursorAdapter = new MyCursorAdapter(this, cursor, MyCursorAdapter.ID_DAY_ITEM);
+        lst_day_menu.setAdapter(cursorAdapter);
     }
 
     @Override

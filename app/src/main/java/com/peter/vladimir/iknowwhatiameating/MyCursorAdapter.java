@@ -19,6 +19,7 @@ import org.w3c.dom.Text;
  * Created by Volodya on 03-Mar-16.
  */
 public class MyCursorAdapter extends CursorAdapter{
+    private static final int COL_ID = 0, COL_DATE = 1;
     private Context _context;
     private int _resource;
     public static final int ID_FOOD_ITEM_LIST = R.layout.fooditem_list_item;
@@ -56,7 +57,9 @@ public class MyCursorAdapter extends CursorAdapter{
             viewHolder.tv_calories.setText(calories + "kcal");
         }else {
             ViewHolderListDayMenu viewHolder = (ViewHolderListDayMenu)view.getTag();
-            String menu = cursor.getString(0)+" "+cursor.getString(1);
+            String menu = cursor.getString(COL_DATE);
+            viewHolder.date = cursor.getString(COL_DATE);
+            viewHolder._id = cursor.getInt(COL_ID);
             viewHolder.tv_menu.setText(menu);
         }
     }
@@ -83,6 +86,8 @@ public class MyCursorAdapter extends CursorAdapter{
     private class ViewHolderListDayMenu {
         protected TextView tv_menu;
         protected Button btn_change;
+        protected String date;
+        protected int _id;
 
         public ViewHolderListDayMenu(View view) {
             tv_menu = (TextView)view.findViewById(R.id.tv_day_menu);
@@ -91,7 +96,8 @@ public class MyCursorAdapter extends CursorAdapter{
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(_context, ChangeDayMenu.class);
-//                    intent.putExtra("_id", _id);
+                    intent.putExtra("date", date);
+                    intent.putExtra("_id", _id);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     _context.startActivity(intent);
                 }

@@ -65,4 +65,10 @@ public abstract class SQLfunctions {
         return _sqLiteDatabase.rawQuery("SELECT * " +
                                         "FROM DailyMenu", null);
     }
+
+    public static Cursor dayItems(String[] arg) {
+        return _sqLiteDatabase.rawQuery("SELECT * " +
+                                        "FROM DayItems " +
+                                        "WHERE day_id = ?", arg);
+    }
 }

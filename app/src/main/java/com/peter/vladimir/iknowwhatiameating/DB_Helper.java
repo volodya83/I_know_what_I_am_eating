@@ -34,13 +34,18 @@ public class DB_Helper extends SQLiteOpenHelper
         final String CREATE_TABLE_DAILY_MENU = "CREATE TABLE DailyMenu ( " +
                                             "_id integer NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                                             "date text " +
-//                                            "meal integer, " +
-//                                            "item integer, " +
-//                                            "num_of integer " +
-                                            ")";
+                                            "); ";
+        final String CREATE_TABLE_DAY_ITEM = "CREATE TABLE DayItems ( " +
+                                            "_id integer NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                                            "day_id integer, " +
+                                            "meal integer, " +
+                                            "item text, " +
+                                            "calories double " +
+                                            "); ";
 
         sqLiteDatabase.execSQL(CREATE_TABLE_FOOD_ITEMS);
         sqLiteDatabase.execSQL(CREATE_TABLE_DAILY_MENU);
+        sqLiteDatabase.execSQL(CREATE_TABLE_DAY_ITEM);
         ContentValues values = new ContentValues();
         Date toDay = new Date(System.currentTimeMillis());
         values.put("date", toDay.toString());
@@ -50,7 +55,7 @@ public class DB_Helper extends SQLiteOpenHelper
 
     @Override
     public void onOpen(SQLiteDatabase db) {
-        onUpgrade(db, 1, 1);    // TODO: onUpgrade
+//        onUpgrade(db, 1, 1);    // TODO: onUpgrade
         super.onOpen(db);
     }
 
@@ -58,6 +63,7 @@ public class DB_Helper extends SQLiteOpenHelper
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS FoodItems ");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS DailyMenu ");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS DayItems");
         onCreate(sqLiteDatabase);
     }
 }

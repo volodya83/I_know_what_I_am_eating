@@ -8,10 +8,13 @@
     android:background="#61cbf2">
 
     <DatePicker
-        android:layout_width="wrap_content"
-        android:layout_height="98dp"
         android:id="@+id/datePicker"
-        android:layout_gravity="center_horizontal" />
+        style="@android:style/Widget.DatePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="96dp"
+        android:spinnersShown="false"
+        android:layout_gravity="center_horizontal"
+        android:startYear="2000" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -27,12 +30,47 @@
         android:orientation="vertical"
         android:id="@+id/ll_breakfast"/>
 
-    <Button
-        android:id="@+id/btn_add_line_breakfast"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/add_line" />
+        android:background="#559ff9">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_weight="4"
+            android:text="@string/calorie_breakfast"
+            android:background="#ffffff"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/tv_calorie_breakfast"
+            android:layout_weight="1.5"
+            android:hint="0"
+            android:background="#ffffff" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_weight="1"
+            android:text="@string/kcal"
+            android:background="#ffffff" />
+
+        <Button
+            android:id="@+id/btn_add_line_breakfast"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/add_line"
+            android:layout_weight="2" />
+    </LinearLayout>
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -48,12 +86,46 @@
         android:orientation="vertical"
         android:id="@+id/ll_lunch"/>
 
-    <Button
-        android:id="@+id/btn_add_line_lunch"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/add_line" />
+        android:background="#559ff9">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_weight="4"
+            android:text="@string/calorie_lunch"
+            android:background="#ffffff"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/tv_calorie_lunch"
+            android:layout_weight="1.5"
+            android:hint="0"
+            android:background="#ffffff" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_weight="1"
+            android:text="@string/kcal"
+            android:background="#ffffff" />
+
+        <Button
+            android:id="@+id/btn_add_line_lunch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/add_line"
+            android:layout_weight="2" />
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -69,12 +141,47 @@
         android:orientation="vertical"
         android:id="@+id/ll_dinner"/>
 
-    <Button
-        android:id="@+id/btn_add_line_dinner"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/add_line" />
+        android:background="#559ff9">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_weight="4"
+            android:text="@string/calorie_dinner"
+            android:background="#ffffff"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/tv_calorie_dinner"
+            android:layout_weight="1.5"
+            android:hint="0"
+            android:background="#ffffff" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_weight="1"
+            android:text="@string/kcal"
+            android:background="#ffffff" />
+
+        <Button
+            android:id="@+id/btn_add_line_dinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/add_line"
+            android:layout_weight="2" />
+    </LinearLayout>
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -90,12 +197,82 @@
         android:orientation="vertical"
         android:id="@+id/ll_snack"/>
 
-    <Button
-        android:id="@+id/btn_add_line_snack"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/add_line" />
+        android:background="#559ff9">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_weight="4"
+            android:text="@string/calorie_snack"
+            android:background="#ffffff"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/tv_calorie_snack"
+            android:layout_weight="1.5"
+            android:hint="0"
+            android:background="#ffffff" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_weight="1"
+            android:text="@string/kcal"
+            android:background="#ffffff" />
+
+        <Button
+            android:id="@+id/btn_add_line_snack"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/add_line"
+            android:layout_weight="2" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="#197efa"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_weight="2.5"
+            android:text="@string/total_calories_day"
+            android:background="#ffffff"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/tv_total_cal_day"
+            android:layout_weight="1"
+            android:hint="0"
+            android:background="#ffffff" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_weight="0.75"
+            android:text="@string/kcal"
+            android:background="#ffffff" />
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -108,14 +285,14 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Save"
+            android:text="@string/save"
             android:id="@+id/btn_save_menu"
             android:layout_weight="1" />
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Clear"
+            android:text="@string/clear"
             android:id="@+id/btn_clear_menu"
             android:layout_weight="1" />
     </LinearLayout>

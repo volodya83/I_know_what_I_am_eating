@@ -40,7 +40,7 @@ public class DB_Helper extends SQLiteOpenHelper
                                             "day_id integer, " +
                                             "meal integer, " +
                                             "item_id integer, " +
-                                            "weight double " +
+                                            "weight_ratios double " +
                                             "); ";
 
         sqLiteDatabase.execSQL(CREATE_TABLE_FOOD_ITEMS);
@@ -55,7 +55,7 @@ public class DB_Helper extends SQLiteOpenHelper
 
     @Override
     public void onOpen(SQLiteDatabase db) {
-        onUpgrade(db, 1, 1);    // TODO: onUpgrade
+//        onUpgrade(db, 1, 1);    // TODO: onUpgrade
         super.onOpen(db);
     }
 

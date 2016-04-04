@@ -77,7 +77,7 @@ public class MyLinearLayout extends LinearLayout implements AdapterView.OnItemCl
         ChangeDayMenu.fillCalories();
     }
 
-    public void setData(String str, int weight, double calories) {
+    public void setData(String str, double weight, double calories) {
         if (str.length()>0){
             _auto_tv.setText(str);
         }

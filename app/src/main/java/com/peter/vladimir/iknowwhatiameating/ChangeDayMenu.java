@@ -1,5 +1,6 @@
 package com.peter.vladimir.iknowwhatiameating;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
 public class ChangeDayMenu extends AppCompatActivity implements View.OnClickListener {
 
@@ -38,12 +40,19 @@ public class ChangeDayMenu extends AppCompatActivity implements View.OnClickList
     private double[] calArr;
     private int[] arr_ids;
 
+    private Date date;
+    private Meal meal;
+    private FoodItem item;
+    private ArrayList<FoodItem> list;
+    private MyLinearLayout layout;
+
     ArrayList<ArrayList<MyLinearLayout>> arr_lists;
 //    TextView[] tv_array;
     private double cal[] = new double[4];
     private double total_cal;
     private int size;
     private int _day_id;
+    private ArrayList<LinearLayout> ll_arr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +62,7 @@ public class ChangeDayMenu extends AppCompatActivity implements View.OnClickList
         String day_id = String.valueOf((_day_id = getIntent().getExtras().getInt("_id")));
         String[] arg = new String[1];
         arg[0] = day_id;
-        Date date = Date.valueOf(date_str);
+        date = Date.valueOf(date_str);
         datePicker = (DatePicker) findViewById(R.id.datePicker);
         datePicker.init(date.getYear() + 1900, date.getMonth(), date.getDate(), null);
 
@@ -63,10 +72,15 @@ public class ChangeDayMenu extends AppCompatActivity implements View.OnClickList
         tv_cal_dinner = (TextView) findViewById(R.id.tv_calorie_dinner);
         tv_cal_snack = (TextView) findViewById(R.id.tv_calorie_snack);
 
+        ll_arr = new ArrayList<LinearLayout>(4);
         ll_breakfast = (LinearLayout) findViewById(R.id.ll_breakfast);
+        ll_arr.add(0, ll_breakfast);
         ll_lunch = (LinearLayout) findViewById(R.id.ll_lunch);
+        ll_arr.add(1, ll_lunch);
         ll_dinner = (LinearLayout) findViewById(R.id.ll_dinner);
+        ll_arr.add(2, ll_dinner);
         ll_snack = (LinearLayout) findViewById(R.id.ll_snack);
+        ll_arr.add(3, ll_snack);
 
         btn_add_line_breakfast = (Button) findViewById(R.id.btn_add_line_breakfast);
         btn_add_line_breakfast.setOnClickListener(this);
@@ -83,9 +97,7 @@ public class ChangeDayMenu extends AppCompatActivity implements View.OnClickList
 
         createAdapter();
         createLists();
-        fillFilds(SQLfunctions.dayItems(arg));
-
-
+        fillFilds(SQLfunctions.getDailyItems(_day_id));
     }
 
     public static void fillCalories(){
@@ -105,37 +117,23 @@ public class ChangeDayMenu extends AppCompatActivity implements View.OnClickList
         return sum;
     }
 
-    private void fillFilds(Cursor cursor) {
-        if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            int meal;
-            MyLinearLayout myLayout;
-            while (cursor.isAfterLast()) {
-                meal = cursor.getInt(COL_MEAL);
-                switch (meal) {
-                    case BREAKFAST:
-                        myLayout = addLine(breakfast_list, ll_breakfast, 0);
-                        myLayout._auto_tv.setText(cursor.getString(COL_ITEM).toString());
-                        tv_cal_breakfast.setText((cursor.getDouble(COL_CALORIES) + Double.valueOf(tv_cal_breakfast.getText().toString())) + "");
-                        break;
-                    case LUNCH:
-                        myLayout = addLine(lunch_list, ll_lunch, 1);
-                        myLayout._auto_tv.setText(cursor.getString(COL_ITEM).toString());
-                        tv_cal_lunch.setText((cursor.getDouble(COL_CALORIES) + Double.valueOf(tv_cal_lunch.getText().toString())) + "");
-                        break;
-                    case DINNER:
-                        myLayout = addLine(dinner_list, ll_dinner, 2);
-                        myLayout._auto_tv.setText(cursor.getString(COL_ITEM).toString());
-                        tv_cal_dinner.setText((cursor.getDouble(COL_CALORIES) + Double.valueOf(tv_cal_dinner.getText().toString())) + "");
-                        break;
-                    case SNACK:
-                        myLayout = addLine(snack_list, ll_snack, 3);
-                        myLayout._auto_tv.setText(cursor.getString(COL_ITEM).toString());
-                        tv_cal_snack.setText((cursor.getDouble(COL_CALORIES) + Double.valueOf(tv_cal_breakfast.getText().toString())) + "");
-                        break;
+    private void fillFilds(DailyMenu menu) {
+        if (menu!=null) {
+            menu.set_date(date);
+
+            for (int i = 0; i < 4; i++){
+                meal = menu.get_meals().get(i);
+                list = meal.get_foodList();
+                for (int j=0; j < list.size(); j++){
+                    item = list.get(j);
+                    layout = addLine(arr_lists.get(i), ll_arr.get(i), i);
+                    layout.setData(item.get_name(), item.get_weight_ratio(), item.get_calories());
                 }
             }
-        }else Toast.makeText(this, "cursor is null", Toast.LENGTH_SHORT).show();
+            fillCalories();
+        }else {
+            Toast.makeText(this, "menu is null" , Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void createLists() {
@@ -149,11 +147,6 @@ public class ChangeDayMenu extends AppCompatActivity implements View.OnClickList
         arr_lists.add(1, lunch_list);
         arr_lists.add(2, dinner_list);
         arr_lists.add(3, snack_list);
-//        tv_array = new TextView[4];
-//        tv_array[0] = tv_cal_breakfast;
-//        tv_array[1] = tv_cal_lunch;
-//        tv_array[2] = tv_cal_dinner;
-//        tv_array[3] = tv_cal_snack;
     }
 
     private void createAdapter() {
@@ -201,6 +194,7 @@ public class ChangeDayMenu extends AppCompatActivity implements View.OnClickList
         ArrayList<MyLinearLayout> list;
         int size;
         MyLinearLayout layout;
+        SQLfunctions.deleteMenuItem(_day_id);
         for (int i = 0; i<4; i++){
             list = arr_lists.get(i);
             size = list.size();
@@ -210,6 +204,9 @@ public class ChangeDayMenu extends AppCompatActivity implements View.OnClickList
                         Double.valueOf(layout._et_weight.getText().toString()), layout._meal);
             }
         }
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
 

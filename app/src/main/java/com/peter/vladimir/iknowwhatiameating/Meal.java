@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Meal {
 
     public static final int BREAKFAST = 0, LUNCH = 1, DINNER = 2, SNACK = 3;
-    public static final String[] MEALS_NAME = {"BREAKFAST: /n", "LUNCH: /n", "DINNER: /n", "DINNER: /n"};
+    public static final String[] MEALS_NAME = {"BREAKFAST: \n", "LUNCH: \n", "DINNER: \n", "DINNER: \n"};
 
     private int _mealType;
     private String str;
@@ -18,6 +18,7 @@ public class Meal {
     public Meal(int mealType){
         this._mealType = mealType;
         this.str = MEALS_NAME[_mealType];
+        this._foodList = new ArrayList<FoodItem>();
     }
 
     public void addFoodItem(FoodItem food){
@@ -36,9 +37,9 @@ public class Meal {
 
     public String toString(){
         for (FoodItem foodItem : _foodList){
-            str.concat(foodItem.toString());
+            str = str.concat(foodItem.toString() + "\n");
         }
-        str.concat("Calories to meal: " + get_mealCalories() + " kcal /n");
+        str = str.concat("Calories to meal: " + get_mealCalories() + " kcal \n");
         return str;
     }
 

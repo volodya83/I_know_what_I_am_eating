@@ -15,6 +15,9 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.io.Serializable;
+import java.sql.Date;
+
 /**
  * Created by Volodya on 03-Mar-16.
  */
@@ -57,10 +60,12 @@ public class MyCursorAdapter extends CursorAdapter{
             viewHolder.tv_calories.setText(calories + "kcal");
         }else {
             ViewHolderListDayMenu viewHolder = (ViewHolderListDayMenu)view.getTag();
-            String menu = cursor.getString(COL_DATE);
+            DailyMenu menu = SQLfunctions.getDailyItems(viewHolder._id = cursor.getInt(COL_ID));
             viewHolder.date = cursor.getString(COL_DATE);
-            viewHolder._id = cursor.getInt(COL_ID);
-            viewHolder.tv_menu.setText(menu);
+            menu.set_date(Date.valueOf(viewHolder.date));
+//            viewHolder.menu = menu;
+//            viewHolder._id = cursor.getInt(COL_ID);
+            viewHolder.tv_menu.setText(menu.toString());
         }
     }
 
@@ -87,6 +92,7 @@ public class MyCursorAdapter extends CursorAdapter{
         protected TextView tv_menu;
         protected Button btn_change;
         protected String date;
+//        protected DailyMenu menu;
         protected int _id;
 
         public ViewHolderListDayMenu(View view) {
@@ -98,6 +104,7 @@ public class MyCursorAdapter extends CursorAdapter{
                     Intent intent = new Intent(_context, ChangeDayMenu.class);
                     intent.putExtra("date", date);
                     intent.putExtra("_id", _id);
+//                    intent.putExtra("menu", (Serializable)menu);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     _context.startActivity(intent);
                 }

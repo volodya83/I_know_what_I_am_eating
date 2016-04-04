@@ -10,6 +10,8 @@ public class FoodItem {
     private String _name;
     private double _calories;
     private double _weight;
+    private double _weight_ratio;
+    private int _id;
     private String str;
 
     private static final String DELIMS = "[||/]";
@@ -18,10 +20,18 @@ public class FoodItem {
         this._name = name;
         this._weight = weight;
         this._calories = calories;
+        this._weight_ratio = 1;
+        this._id = -1;
+    }
+
+    public FoodItem(String name, double weight, double calories, double weight_ratio, int id){
+        this(name,weight,calories);
+        this._weight_ratio = weight_ratio;
+        this._id = id;
     }
 
     public String toString(){
-        str = _name+" || "+_weight+" gr / "+_calories+" kcal";
+        str = _name+" {"+_weight+" gr / "+_calories+" kcal }";
         return str;
     }
 
@@ -53,5 +63,9 @@ public class FoodItem {
 
     public void set_weight(double _weight) {
         this._weight = _weight;
+    }
+
+    public double get_weight_ratio() {
+        return _weight_ratio;
     }
 }

@@ -8,11 +8,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import java.sql.Date;
+
 public class MainActivity extends AppCompatActivity {
+
+    private static final int COL_DATE = 1;
 
     private ListView lst_day_menu;
     private MyCursorAdapter cursorAdapter;
     private Cursor cursor;
+    private int position;
+    private String cur_date, date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,11 +26,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         SQLfunctions.setContext(getApplicationContext());
-        SQLfunctions.addDays();
+        cur_date = new Date(System.currentTimeMillis()).toString();
         cursor = SQLfunctions.getDayMenu();
+        position = get_position(cursor);
         lst_day_menu = (ListView)findViewById(R.id.lst_days);
         cursorAdapter = new MyCursorAdapter(this, cursor, MyCursorAdapter.ID_DAY_ITEM);
         lst_day_menu.setAdapter(cursorAdapter);
+        lst_day_menu.setSelection(position);
+    }
+
+    private int get_position(Cursor cursor) {
+        cursor.moveToFirst();
+        int position = 0;
+        while (!cursor.isAfterLast() && position == 0){
+            date = cursor.getString(COL_DATE);
+            if (date.compareTo(cur_date) == 0){
+                position = cursor.getPosition();
+            }
+            cursor.moveToNext();
+        }
+        return position;
     }
 
     @Override

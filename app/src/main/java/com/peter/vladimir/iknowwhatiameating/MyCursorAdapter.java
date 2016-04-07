@@ -3,7 +3,6 @@ package com.peter.vladimir.iknowwhatiameating;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +10,7 @@ import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.io.Serializable;
 import java.sql.Date;
 
 /**
@@ -63,9 +58,7 @@ public class MyCursorAdapter extends CursorAdapter{
             DailyMenu menu = SQLfunctions.getDailyItems(viewHolder._id = cursor.getInt(COL_ID));
             viewHolder.date = cursor.getString(COL_DATE);
             menu.set_date(Date.valueOf(viewHolder.date));
-//            viewHolder.menu = menu;
-//            viewHolder._id = cursor.getInt(COL_ID);
-            viewHolder.tv_menu.setText(menu.toString());
+            viewHolder.tv_menu.setText(menu.toStringMenu());
         }
     }
 
@@ -92,7 +85,6 @@ public class MyCursorAdapter extends CursorAdapter{
         protected TextView tv_menu;
         protected Button btn_change;
         protected String date;
-//        protected DailyMenu menu;
         protected int _id;
 
         public ViewHolderListDayMenu(View view) {
@@ -104,7 +96,6 @@ public class MyCursorAdapter extends CursorAdapter{
                     Intent intent = new Intent(_context, ChangeDayMenu.class);
                     intent.putExtra("date", date);
                     intent.putExtra("_id", _id);
-//                    intent.putExtra("menu", (Serializable)menu);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     _context.startActivity(intent);
                 }

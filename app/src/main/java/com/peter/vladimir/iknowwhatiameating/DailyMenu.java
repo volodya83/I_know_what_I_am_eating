@@ -21,6 +21,15 @@ public class DailyMenu implements Serializable{
         str = str.concat(_breakfast.toString() + _lunch.toString() + _dinner.toString() + _snack.toString() );
         return str;
     }
+
+    public String toStringMenu(){
+        str = str.concat("\t\t\t\t\t\t\t\t\t\t" + _date.toString() + "\n");
+        str = str.concat(_breakfast.toStringMenu() + _lunch.toStringMenu() + _dinner.toStringMenu() + _snack.toStringMenu() );
+        // TODO: 08-Apr-16 daily calories
+
+        return str;
+    }
+
     public DailyMenu(){
         super();
         _meals = new ArrayList<Meal>(4);
@@ -75,14 +84,6 @@ public class DailyMenu implements Serializable{
     public void set_snack(Meal _snack) {
         this._snack = _snack;
     }
-
-//    public ArrayList<FoodItem> get_other() {
-//        return _other;
-//    }
-//
-//    public void add_other(FoodItem item) {
-//        this._other.add(item);
-//    }
 
     public double get_calories() {
         return _calories;

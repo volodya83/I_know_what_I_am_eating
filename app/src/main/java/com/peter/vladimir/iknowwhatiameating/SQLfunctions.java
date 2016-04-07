@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.sql.Date;
-import java.util.Calendar;
 
 /**
  * Created by Volodya on 28-Feb-16.
@@ -48,7 +47,7 @@ public abstract class SQLfunctions {
         _sqLiteDatabase.delete(TABLE_FOOD_ITEMS, "name='"+item+"'", null);
     }
 
-    public static void addDays() {
+    public static Date addDays() {
         Cursor cursor = _sqLiteDatabase.rawQuery("SELECT MAX(date) " +
                                                 "FROM DailyMenu ", null);
         cursor.moveToFirst();
@@ -63,6 +62,7 @@ public abstract class SQLfunctions {
                 _sqLiteDatabase.insert(TABLE_DAILY_MENU, "", values);
             }
         }
+        return cur_date;
     }
 
     public static Cursor getDayMenu() {

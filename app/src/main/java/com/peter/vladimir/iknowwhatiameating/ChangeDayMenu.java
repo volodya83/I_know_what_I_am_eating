@@ -2,13 +2,10 @@ package com.peter.vladimir.iknowwhatiameating;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
@@ -17,9 +14,6 @@ import android.widget.Toast;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
 
 public class ChangeDayMenu extends AppCompatActivity implements View.OnClickListener {
 
@@ -127,7 +121,7 @@ public class ChangeDayMenu extends AppCompatActivity implements View.OnClickList
                 for (int j=0; j < list.size(); j++){
                     item = list.get(j);
                     layout = addLine(arr_lists.get(i), ll_arr.get(i), i);
-                    layout.setData(item.get_name(), item.get_weight_ratio(), item.get_calories());
+                    layout.setData(item.toString(), item.get_weight_ratio(), item.get_calories(), item.get_id());
                 }
             }
             fillCalories();
@@ -193,6 +187,7 @@ public class ChangeDayMenu extends AppCompatActivity implements View.OnClickList
     private void saveMenu() {
         ArrayList<MyLinearLayout> list;
         int size;
+        int item_id;
         MyLinearLayout layout;
         SQLfunctions.deleteMenuItem(_day_id);
         for (int i = 0; i<4; i++){
@@ -200,8 +195,14 @@ public class ChangeDayMenu extends AppCompatActivity implements View.OnClickList
             size = list.size();
             for (int j = 0; j < size; j++){
                 layout = list.get(j);
-                SQLfunctions.saveMenuItem(_day_id, arr_ids[layout._arr_position],
-                        Double.valueOf(layout._et_weight.getText().toString()), layout._meal);
+                if (layout._auto_tv.getText().length() > 1) {
+                    if (layout._arr_position > 0) {
+                        item_id = arr_ids[layout._arr_position];
+                    } else {
+                        item_id = layout._item_id;
+                    }
+                    SQLfunctions.saveMenuItem(_day_id, item_id, Double.valueOf(layout._et_weight.getText().toString()), layout._meal);
+                }
             }
         }
         Intent intent = new Intent(this, MainActivity.class);

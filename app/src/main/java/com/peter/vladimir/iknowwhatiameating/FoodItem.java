@@ -1,8 +1,5 @@
 package com.peter.vladimir.iknowwhatiameating;
 
-import android.content.Context;
-import android.widget.Toast;
-
 /**
  * Created by Volodya on 23-Feb-16.
  */
@@ -21,7 +18,6 @@ public class FoodItem {
         this._weight = weight;
         this._calories = calories;
         this._weight_ratio = 1;
-        this._id = -1;
     }
 
     public FoodItem(String name, double weight, double calories, double weight_ratio, int id){
@@ -35,10 +31,9 @@ public class FoodItem {
         return str;
     }
 
-    public static String[] foodItemStringParser(String itemStr, Context context){
-        String[] itemArr = itemStr.split(DELIMS);
-        Toast.makeText(context, itemStr+"---"+itemArr.toString(), Toast.LENGTH_SHORT).show();
-        return itemArr;
+    public String toStringMenu(){
+        str = _name + " {" + _weight * _weight_ratio + " gr / " + _calories * _weight_ratio + " kcal }";
+        return str;
     }
 
     public String get_name() {
@@ -67,5 +62,9 @@ public class FoodItem {
 
     public double get_weight_ratio() {
         return _weight_ratio;
+    }
+
+    public int get_id(){
+        return _id;
     }
 }

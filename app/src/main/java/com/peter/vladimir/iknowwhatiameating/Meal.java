@@ -17,7 +17,7 @@ public class Meal {
 
     public Meal(int mealType){
         this._mealType = mealType;
-        this.str = MEALS_NAME[_mealType];
+        this.str = "\t" + MEALS_NAME[_mealType];
         this._foodList = new ArrayList<FoodItem>();
     }
 
@@ -40,6 +40,14 @@ public class Meal {
             str = str.concat(foodItem.toString() + "\n");
         }
         str = str.concat("Calories to meal: " + get_mealCalories() + " kcal \n");
+        return str;
+    }
+
+    public String toStringMenu(){
+        for (FoodItem foodItem : _foodList){
+            str = str.concat(foodItem.toStringMenu() + "\n");
+        }
+        str = str.concat("\t Calories to meal: " + get_mealCalories() + " kcal \n");
         return str;
     }
 
